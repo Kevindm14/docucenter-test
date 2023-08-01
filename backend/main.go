@@ -5,6 +5,7 @@ import (
 
 	"github.com/Kevindm14/docucenter-test/config"
 	"github.com/Kevindm14/docucenter-test/internal/models"
+	"github.com/Kevindm14/docucenter-test/routes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 
@@ -23,6 +24,9 @@ func main() {
 		&models.GroundDelivery{},
 		&models.MaritimeDelivery{},
 	)
+
+	// Routes
+	routes.SetRoutesApiV1(app)
 
 	log.Fatal(app.Listen(":8080"))
 }
