@@ -3,8 +3,6 @@ package main
 import (
 	"log"
 
-	"github.com/Kevindm14/docucenter-test/config"
-	"github.com/Kevindm14/docucenter-test/internal/models"
 	"github.com/Kevindm14/docucenter-test/routes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -16,24 +14,15 @@ func main() {
 	app := fiber.New()
 	app.Use(logger.New())
 
-	app.Use(
-		func(c *fiber.Ctx) error {
-			c.Set("Access-Control-Allow-Origin", "*")
-			c.Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
-			c.Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-			return c.Next()
-		},
-	)
-
-	db := config.PgDBConnection()
-	db.AutoMigrate(
-		&models.Customer{},
-		&models.GroundDelivery{},
-		&models.MaritimeDelivery{},
-	)
+	app.Use(func(c *fiber.Ctx) error {
+		c.Set("Access-Control-Allow-Origin", "*")
+		c.Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+		c.Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		return c.Next()
+	})
 
 	// Routes
-	routes.SetRoutesApiV1(app, db)
+	routes.SetRoutesApiV1(app)
 
 	log.Fatal(app.Listen(":8080"))
 }

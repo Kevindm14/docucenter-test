@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Kevindm14/docucenter-test/internal/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -51,12 +52,18 @@ func PgDBConnection() *gorm.DB {
 		DB.Exec(sql)
 	}
 
-	db, err := gorm.Open(postgres.Open(connDbUrl), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open(connDbUrl), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
 
+	DB.AutoMigrate(
+		&models.Customer{},
+		&models.GroundDelivery{},
+		&models.MaritimeDelivery{},
+	)
+
 	fmt.Println("Database connected successfully")
 
-	return db
+	return DB
 }
