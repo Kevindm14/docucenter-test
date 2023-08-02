@@ -19,7 +19,13 @@ func NewMaritimeDeliveryHandler(mr maritimeDeliveries.Repository) *MaritimeDeliv
 
 // GetMaritimeDeliveries
 func (m *MaritimeDeliveryHandler) GetMaritimeDeliveries(c *fiber.Ctx) error {
-	maritimeDeliveries, err := m.mr.ListMaritimeDeliveries()
+	filterDeliveries := maritimeDeliveries.Filter{
+		ClientID:        c.Query("client_id"),
+		ProductType:     c.Query("type"),
+		ProductQuantity: c.QueryInt("quantity"),
+	}
+
+	maritimeDeliveries, err := m.mr.ListMaritimeDeliveries(filterDeliveries)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
