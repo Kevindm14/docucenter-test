@@ -1,8 +1,6 @@
 package http
 
 import (
-	"time"
-
 	groundDeliveries "github.com/Kevindm14/docucenter-test/internal/ground_deliveries"
 	"github.com/Kevindm14/docucenter-test/internal/models"
 	"github.com/gofiber/fiber/v2"
@@ -37,13 +35,6 @@ func (h *GroundDeliveryHandler) CreateGroundDelivery(c *fiber.Ctx) error {
 	if err := c.BodyParser(&groundDelivery); err != nil {
 		return err
 	}
-
-	format := "2006-01-02"
-	deliveryDate, _ := time.Parse(format, groundDelivery.DeliveryDate.String())
-	groundDelivery.DeliveryDate = deliveryDate
-
-	registrationDate, _ := time.Parse(format, groundDelivery.RegistrationDate.String())
-	groundDelivery.RegistrationDate = registrationDate
 
 	if groundDelivery.ProductQuantity > 10 {
 		shippingPrice := groundDelivery.ShippingPrice

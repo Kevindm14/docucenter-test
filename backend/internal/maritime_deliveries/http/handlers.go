@@ -17,6 +17,18 @@ func NewMaritimeDeliveryHandler(mr maritimeDeliveries.Repository) *MaritimeDeliv
 	}
 }
 
+// GetMaritimeDeliveries
+func (m *MaritimeDeliveryHandler) GetMaritimeDeliveries(c *fiber.Ctx) error {
+	maritimeDeliveries, err := m.mr.ListMaritimeDeliveries()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(maritimeDeliveries)
+}
+
 // CreateMaritimeDelivery
 func (m *MaritimeDeliveryHandler) CreateMaritimeDelivery(c *fiber.Ctx) error {
 	maritimeDelivery := models.MaritimeDelivery{}

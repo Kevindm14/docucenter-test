@@ -10,12 +10,14 @@ type CustomerHandler struct {
 	cr customers.Repository
 }
 
+// NewCustomerHandler creates a new customer handler
 func NewCustomerHandler(cr customers.Repository) *CustomerHandler {
 	return &CustomerHandler{
 		cr: cr,
 	}
 }
 
+// GetCustomers gets all customers
 func (ch *CustomerHandler) GetCustomers(c *fiber.Ctx) error {
 	customers, err := ch.cr.GetCustomers()
 	if err != nil {
@@ -27,6 +29,7 @@ func (ch *CustomerHandler) GetCustomers(c *fiber.Ctx) error {
 	return c.JSON(customers)
 }
 
+// GetCustomerById gets a customer by id
 func (ch *CustomerHandler) GetCustomerById(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
@@ -45,6 +48,7 @@ func (ch *CustomerHandler) GetCustomerById(c *fiber.Ctx) error {
 	return c.JSON(customer)
 }
 
+// CreateCustomer creates a customer
 func (ch *CustomerHandler) CreateCustomer(c *fiber.Ctx) error {
 	customer := models.Customer{}
 	if err := c.BodyParser(&customer); err != nil {
@@ -63,6 +67,7 @@ func (ch *CustomerHandler) CreateCustomer(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(customer)
 }
 
+// UpdateCustomer updates a customer
 func (ch *CustomerHandler) UpdateCustomer(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
@@ -100,6 +105,7 @@ func (ch *CustomerHandler) UpdateCustomer(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(customer)
 }
 
+// DeleteCustomer deletes a customer by id
 func (ch *CustomerHandler) DeleteCustomer(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
