@@ -13,20 +13,27 @@ import (
 )
 
 func main() {
-	log.Println("Starting server on port 8080...")
-
 	app := fiber.New()
 	app.Use(logger.New())
 
-	dB := config.PgDBConnection()
-	dB.AutoMigrate(
+	app.Use(
+		func(c *fiber.Ctx) error {
+			c.Set("Access-Control-Allow-Origin", "*")
+			c.Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+			c.Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+			return c.Next()
+		},
+	)
+
+	db := config.PgDBConnection()
+	db.AutoMigrate(
 		&models.Customer{},
 		&models.GroundDelivery{},
 		&models.MaritimeDelivery{},
 	)
 
 	// Routes
-	routes.SetRoutesApiV1(app)
+	routes.SetRoutesApiV1(app, db)
 
 	log.Fatal(app.Listen(":8080"))
 }
