@@ -31,9 +31,12 @@ func (pg *pgRepository) GetMaritimeDelivery(id int) (models.MaritimeDelivery, er
 }
 
 // ListMaritimeDeliveries implements maritime_deliveries.Repository.
-func (pg *pgRepository) ListMaritimeDeliveries() ([]models.MaritimeDelivery, error) {
+func (pg *pgRepository) ListMaritimeDeliveries(filter maritime_deliveries.Filter) ([]models.MaritimeDelivery, error) {
 	maritimeDeliveries := []models.MaritimeDelivery{}
-	if err := pg.DB.Find(&maritimeDeliveries).Error; err != nil {
+	err := pg.DB.Scopes(filter.FilterDeliveries).
+		Find(&maritimeDeliveries).Error
+
+	if err != nil {
 		return []models.MaritimeDelivery{}, err
 	}
 

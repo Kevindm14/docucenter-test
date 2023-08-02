@@ -17,9 +17,12 @@ func NewPgRepository(db *gorm.DB) groundDeliveries.Repository {
 }
 
 // ListGroundDeliveries implements ground_deliveries.Repository.
-func (pg *pgRepository) ListGroundDeliveries() ([]models.GroundDelivery, error) {
+func (pg *pgRepository) ListGroundDeliveries(filter groundDeliveries.Filter) ([]models.GroundDelivery, error) {
 	var groundDeliveries []models.GroundDelivery
-	if err := pg.DB.Find(&groundDeliveries).Error; err != nil {
+	err := pg.DB.Scopes(filter.FilterDeliveries).
+		Find(&groundDeliveries).Error
+
+		if err != nil {
 		return nil, err
 	}
 

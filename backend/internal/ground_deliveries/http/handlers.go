@@ -19,7 +19,13 @@ func NewGroundDeliveryHandler(cr groundDeliveries.Repository) *GroundDeliveryHan
 
 // ListGroundDeliveries
 func (h *GroundDeliveryHandler) ListGroundDeliveries(c *fiber.Ctx) error {
-	groundDeliveries, err := h.cr.ListGroundDeliveries()
+	filterDeliveries := groundDeliveries.Filter{
+		ClientID:  c.Query("client_id"),
+		ProductType:  c.Query("type"),
+		ProductQuantity: c.QueryInt("quantity"),
+	}
+
+	groundDeliveries, err := h.cr.ListGroundDeliveries(filterDeliveries)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
