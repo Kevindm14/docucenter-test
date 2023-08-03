@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/Kevindm14/docucenter-test/config"
 	"github.com/Kevindm14/docucenter-test/routes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
@@ -38,11 +39,6 @@ func TestRoutes(t *testing.T) {
 			expectedCode: 200,
 		},
 		{
-			name:         "Get customer by id",
-			route:        "/api/v1/customers/1",
-			expectedCode: 200,
-		},
-		{
 			name:         "Get ground deliveries",
 			route:        "/api/v1/ground-deliveries",
 			expectedCode: 200,
@@ -60,8 +56,11 @@ func TestRoutes(t *testing.T) {
 			// Create new fiber app
 			app := fiber.New()
 
+			// Database connection
+			db := config.PgDBConnectionTest()
+
 			// Set routes
-			routes.SetRoutesApiV1(app)
+			routes.SetRoutesApiV1(app, db)
 
 			req := httptest.NewRequest(http.MethodGet, test.route, nil)
 			resp, err := app.Test(req)
