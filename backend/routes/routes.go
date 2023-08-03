@@ -1,12 +1,12 @@
 package routes
 
 import (
-	"github.com/Kevindm14/docucenter-test/config"
 	authHttp "github.com/Kevindm14/docucenter-test/internal/auth/http"
 	customersHttp "github.com/Kevindm14/docucenter-test/internal/customers/http"
 	groundDeliveriesHttp "github.com/Kevindm14/docucenter-test/internal/ground_deliveries/http"
 	maritimeDeliveriesHttp "github.com/Kevindm14/docucenter-test/internal/maritime_deliveries/http"
 	"github.com/Kevindm14/docucenter-test/middleware"
+	"gorm.io/gorm"
 
 	authRepository "github.com/Kevindm14/docucenter-test/internal/auth/repository"
 	customerRepository "github.com/Kevindm14/docucenter-test/internal/customers/repository"
@@ -16,10 +16,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func SetRoutesApiV1(app *fiber.App) {
-	// Database connection
-	db := config.PgDBConnection()
-
+func SetRoutesApiV1(app *fiber.App, db *gorm.DB) {
 	// API group
 	api := app.Group("/api/v1")
 

@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/Kevindm14/docucenter-test/config"
 	"github.com/Kevindm14/docucenter-test/routes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -21,8 +22,11 @@ func main() {
 		return c.Next()
 	})
 
+	// Database connection
+	db := config.PgDBConnection()
+
 	// Routes
-	routes.SetRoutesApiV1(app)
+	routes.SetRoutesApiV1(app, db)
 
 	log.Fatal(app.Listen(":8080"))
 }

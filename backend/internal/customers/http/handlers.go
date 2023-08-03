@@ -40,7 +40,7 @@ func (ch *CustomerHandler) GetCustomerById(c *fiber.Ctx) error {
 
 	customer, err := ch.cr.GetCustomerById(id)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 			"error": err.Error(),
 		})
 	}
