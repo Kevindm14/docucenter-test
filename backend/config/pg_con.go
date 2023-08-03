@@ -27,7 +27,7 @@ func PgDBConnection() *gorm.DB {
 		Port:     os.Getenv("DB_PORT"),
 		User:     os.Getenv("DB_USER"),
 		Password: os.Getenv("DB_PASSWORD"),
-		DBName:   os.Getenv("DB_NAME"),
+		DBName:   "deliveries_db_development",
 	}
 
 	conInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s sslmode=disable",
